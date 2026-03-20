@@ -23,23 +23,24 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
-            steps {
-                echo 'Running Selenium tests inside Docker...'
-                sh '''
-                    docker run --rm \
-                        -v ${WORKSPACE}/test-results:/app/target \
-                        ${IMAGE_NAME}
-                '''
-            }
-        }
+stage('Run Tests') {
+    steps {
+        echo 'Running Selenium tests inside Docker...'
+        sh '''
+            docker run --rm \
+                --name test-run \
+                -v ${WORKSPACE}/test-results:/app/target/surefire-reports \
+                ${IMAGE_NAME}
+        '''
+    }
+}
 
-        stage('Publish Results') {
-            steps {
-                echo 'Publishing test results...'
-                junit 'test-results/surefire-reports/*.xml'
-            }
-        }
+stage('Publish Results') {
+    steps {
+        echo 'Publishing test results...'
+        junit allowEmptyResults: true, testResults: 'test-results/*.xml'
+    }
+}
     }
 
     post {
@@ -52,6 +53,7 @@ pipeline {
         always {
             // Clean up the Docker image after every run
             sh 'docker rmi ${IMAGE_NAME} || true'
+            cleanWs()
         }
     }
 }
