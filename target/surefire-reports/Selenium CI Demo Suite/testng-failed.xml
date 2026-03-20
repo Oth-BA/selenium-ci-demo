@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Selenium CI Demo Suite]" guice-stage="DEVELOPMENT" verbose="0">
+  <test thread-count="5" name="Google Search Tests(failed)" verbose="0">
+    <classes>
+      <class name="com.qa.demo.GoogleSearchTest">
+        <methods>
+          <include name="setUp"/>
+          <include name="searchGoogle"/>
+          <include name="tearDown"/>
+        </methods>
+      </class> <!-- com.qa.demo.GoogleSearchTest -->
+    </classes>
+  </test> <!-- Google Search Tests(failed) -->
+</suite> <!-- Failed suite [Selenium CI Demo Suite] -->
