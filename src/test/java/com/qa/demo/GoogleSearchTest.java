@@ -95,6 +95,31 @@ public class GoogleSearchTest {
                 "Error message not found. Actual: " + errorMessage.getText()
         );
     }
+    @Test
+    public void secureAreaHasLogoutButton() {
+        // Step 1: log in first
+        driver.get("https://the-internet.herokuapp.com/login");
+        driver.findElement(By.id("username")).sendKeys("tomsmith");
+        driver.findElement(By.id("password")).sendKeys("SuperSecretPassword!");
+        driver.findElement(By.cssSelector("button[type='submit']")).click();
+
+        // Step 2: verify we landed on the secure area
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.urlContains("secure"));
+
+        // Step 3: verify the logout button exists
+        WebElement logoutButton = driver.findElement(
+                By.cssSelector("a.button.secondary")
+        );
+        Assert.assertTrue(
+                logoutButton.isDisplayed(),
+                "Logout button should be visible on secure area"
+        );
+        Assert.assertTrue(
+                logoutButton.getText().contains("Logout"),
+                "Button text should say Logout but was: " + logoutButton.getText()
+        );
+    }
 
     @AfterMethod
     public void tearDown() {
